@@ -53,29 +53,27 @@ public class StringHandlerTest {
     void testAdvancedHandler() {
         StringHandler handler = StringHandlerFactory.getHandler(StringHandlerTypeEnum.ADVANCED);
         String input1 = "eabcccbad";
-        String expected1 = "eed";
+        String expected1 = "ed";
         // input:eabcccbad
         // -> eabbbad, ccc is replaced by b
         // -> eaaad, bbb is replaced by a
-        // -> eed, aaa is replaced by e
+        // -> ed, aaa is replaced by ""
         assertEquals(expected1, handler.process(input1));
 
         String input2 = "abcccdddeeef";
-        String expected2 = "f";
+        String expected2 = "abbcdf";
         // input:abcccdddeeef
         // -> abbdddeeef, ccc is replaced by b
-        // -> abbbeeef, ddd is replaced by b
-        // -> aaeeef, bbb is replaced by a
-        // -> aaaf, eee is replaced by a
-        // -> "f", aaa is replaced by ""
+        // -> abbceeef, ddd is replaced by c
+        // -> abbcdf, eee is replaced by d
         assertEquals(expected2, handler.process(input2));
 
         String input3 = "eabccccba";
-        String expected3 = "ee";
+        String expected3 = "e";
         // input:eabccccba
         // -> eabbba, cccc is replaced by b
         // -> eaaa, bbb is replaced by a
-        // -> ee, aaa is replaced by e
+        // -> e, aaa is replaced by ""
         assertEquals(expected3, handler.process(input3));
     }
 

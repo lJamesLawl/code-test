@@ -20,19 +20,32 @@ public class AdvancedStringHandlerImpl extends AbstractStringHandler {
         boolean changed;
 
         do {
-            // 每轮循环开始前先假设变更为false
             changed = false;
-            // 通过正则查询是否存在重复字符
             Matcher matcher = compile.matcher(result);
             if (matcher.find()) {
-                // 获取重复字符段的起始index
                 int start = matcher.start();
-                // 获取重复字符段的结束位置后一位的index
                 int end = matcher.end();
-                // 取出起始index-1位置的字符串，若index<=0（为字符串开头），则取空字符串
-                String before = start > 0 ? String.valueOf(result.charAt(start - 1)) : "";
-                // 按index的range执行替换操作
-                result = new StringBuilder(result).replace(start, end, before).toString();
+
+                // 获取第一个重复字符
+                char firstChar = result.charAt(start);
+
+                // 计算前一个字母（按字母表顺序）
+                char replacementChar;
+                if (firstChar > 'a') {
+                    replacementChar = (char) (firstChar - 1);
+                } else {
+                    // 如果是 'a'，则无法再往前退，直接移除重复项即可
+                    replacementChar = ' ';
+                }
+
+                // 替换重复字符段为前一个字母
+                result = new StringBuilder(result).replace(start, end, String.valueOf(replacementChar)).toString();
+
+                // 如果替换的是空格（即原为 'a' 的重复），则去掉该字符
+                if (replacementChar == ' ') {
+                    result = result.replace(" ", "");
+                }
+
                 changed = true;
             }
         } while (changed);
